@@ -59,6 +59,14 @@
 
 // initialize variables - graded assignments
 // initialize variables - graded assignments
+
+
+/*
+ Lad os lige snakke omkring - Statisk og Dynamisk typed i programmeringssprog samt Stærk (strong) og svag (weak) typer! 
+JS er Dynamisk og svag
+Python er Dynmaisk og stærk
+C# og andre C sprog er statisk og stærk
+ */
 int examAssignments = 5;
 
 int[] sophiaScores = new int[] { 90, 86, 87, 98, 100, 94, 90 };
