@@ -10,3 +10,5 @@ int course2Credit = 3;
 int course3Credit = 4;
 int course4Credit = 4;
 int course5Credit = 3;
+
+Console.WriteLine();

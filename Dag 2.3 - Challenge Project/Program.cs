@@ -20,56 +20,46 @@ This C# console application is designed to:
 */
 int examAssignments = 5;
 
-string[] studentNames = new string[] { "Sophia", "Andrew", "Emma", "Logan" };
-
-int[] sophiaScores = new int[] { 90, 86, 87, 98, 100, 94, 90 };
-int[] andrewScores = new int[] { 92, 89, 81, 96, 90, 89 };
-int[] emmaScores = new int[] { 90, 85, 87, 98, 68, 89, 89, 89 };
-int[] loganScores = new int[] { 90, 95, 87, 88, 96, 96 };
-
-int[] studentScores = new int[10];
+var Students = new Dictionary<string, int[]>
+{
+    {"Sophia", new int[] { 90, 86, 87, 98, 100, 94, 90 } },
+    {"Andrew", new int[] { 92, 89, 81, 96, 90, 89 } },
+    {"Emma"  , new int[] { 90, 85, 87, 98, 68, 89, 89, 89 } },
+    {"Logan" , new int[] { 90, 95, 87, 88, 96, 96 } }
+};
 
 string currentStudentLetterGrade = "";
 
 // display the header row for scores/grades
 Console.Clear();
-Console.WriteLine("Student\t\tGrade\tLetter Grade\n");
+Console.WriteLine("Student\t     Exam Score \tOverall Grade\t  \t Extra Credit \n");
 
-/*
-The outer foreach loop is used to:
-- iterate through student names 
-- assign a student's grades to the studentScores array
-- sum assignment scores (inner foreach loop)
-- calculate numeric and letter grade
-- write the score report information
-*/
-foreach (string name in studentNames)
+foreach (var (name, grades) in Students)
 {
-    string currentStudent = name;
 
-    if (currentStudent == "Sophia")
-        studentScores = sophiaScores;
+    decimal sumAssignmentScores = 0;
 
-    else if (currentStudent == "Andrew")
-        studentScores = andrewScores;
+    decimal overallGrade = 0;
 
-    else if (currentStudent == "Emma")
-        studentScores = emmaScores;
+    decimal examScore = 0;
 
-    else if (currentStudent == "Logan")
-        studentScores = loganScores;
-
-    int sumAssignmentScores = 0;
-
-    decimal currentStudentGrade = 0;
+    decimal ExtraCredit = 0;
 
     int gradedAssignments = 0;
 
-    /* 
-    the inner foreach loop sums assignment scores
-    extra credit assignments are worth 10% of an exam score
-    */
-    foreach (int score in studentScores)
+    for (int i = 0; i < grades.Length; i++)
+    {
+        if (i < 5)
+        {
+            examScore += (decimal)grades[i] / 5;
+        }
+        else
+        {
+            ExtraCredit += grades[i] / (grades.Length - 5);
+        }
+    }
+
+    foreach (int score in grades)
     {
         gradedAssignments += 1;
 
@@ -77,185 +67,43 @@ foreach (string name in studentNames)
             sumAssignmentScores += score;
 
         else
-            sumAssignmentScores += score / 10;
+            sumAssignmentScores += (decimal)score / 10;
     }
 
-    currentStudentGrade = (decimal)(sumAssignmentScores) / examAssignments;
+    overallGrade = (decimal)(sumAssignmentScores) / examAssignments;
 
-    if (currentStudentGrade >= 97)
-        currentStudentLetterGrade = "A+";
+    decimal EXPoints = overallGrade - examScore;
 
-    else if (currentStudentGrade >= 93)
-        currentStudentLetterGrade = "A";
+    var gradeRanges = new Dictionary<int, string>
+{
+    {  97, "A+" },
+    {  93, "A" },
+    {  90, "A-" },
+    {  87, "B+" },
+    {  83, "B" },
+    {  80, "B-" },
+    {  77, "C+" },
+    {  73, "C" },
+    {  70, "C-" },
+    {  67, "D+" },
+    {  63, "D" },
+    {  60, "D-" }
+};
 
-    else if (currentStudentGrade >= 90)
-        currentStudentLetterGrade = "A-";
+    // Find the letter grade for the current student's grade
+    foreach (var (grade, letterGrade) in gradeRanges)
+    {
+        if (overallGrade >= grade)
+        {
+            currentStudentLetterGrade = letterGrade;
+            break; // Exit the loop once the grade is found
+        }
+    }
 
-    else if (currentStudentGrade >= 87)
-        currentStudentLetterGrade = "B+";
-
-    else if (currentStudentGrade >= 83)
-        currentStudentLetterGrade = "B";
-
-    else if (currentStudentGrade >= 80)
-        currentStudentLetterGrade = "B-";
-
-    else if (currentStudentGrade >= 77)
-        currentStudentLetterGrade = "C+";
-
-    else if (currentStudentGrade >= 73)
-        currentStudentLetterGrade = "C";
-
-    else if (currentStudentGrade >= 70)
-        currentStudentLetterGrade = "C-";
-
-    else if (currentStudentGrade >= 67)
-        currentStudentLetterGrade = "D+";
-
-    else if (currentStudentGrade >= 63)
-        currentStudentLetterGrade = "D";
-
-    else if (currentStudentGrade >= 60)
-        currentStudentLetterGrade = "D-";
-
-    else
-        currentStudentLetterGrade = "F";
-
-    // Student         Grade
-    // Sophia:         92.2    A-
-
-    Console.WriteLine($"{currentStudent}\t\t{currentStudentGrade}\t{currentStudentLetterGrade}");
+    Console.WriteLine($"{name}\t\t{examScore}\t\t{overallGrade}\t{currentStudentLetterGrade}\t\t {ExtraCredit} ({EXPoints} pts) ");
 }
 
-// required for running in VS Code (keeps the Output windows open to view results)
 Console.WriteLine("\n\rPress the Enter key to continue");
 Console.ReadLine();
 
 
-//Finale code
-//int examAssignments = 5;
-
-//string[] studentNames = new string[] { "Sophia", "Andrew", "Emma", "Logan" };
-
-//int[] sophiaScores = new int[] { 90, 86, 87, 98, 100, 94, 90 };
-//int[] andrewScores = new int[] { 92, 89, 81, 96, 90, 89 };
-//int[] emmaScores = new int[] { 90, 85, 87, 98, 68, 89, 89, 89 };
-//int[] loganScores = new int[] { 90, 95, 87, 88, 96, 96 };
-
-//int[] studentScores = new int[10];
-
-//string currentStudentLetterGrade = "";
-
-//// display the header row for scores/grades
-//Console.Clear();
-//Console.WriteLine("Student\t\tExam Score\tOverall Grade\tExtra Credit\n");
-
-///*
-//The outer foreach loop is used to:
-//- iterate through student names 
-//- assign a student's grades to the studentScores array
-//- calculate exam and extra credit sums (inner foreach loop)
-//- calculate numeric and letter grade
-//- write the score report information
-//*/
-//foreach (string name in studentNames)
-//{
-//    string currentStudent = name;
-
-//    if (currentStudent == "Sophia")
-//        studentScores = sophiaScores;
-
-//    else if (currentStudent == "Andrew")
-//        studentScores = andrewScores;
-
-//    else if (currentStudent == "Emma")
-//        studentScores = emmaScores;
-
-//    else if (currentStudent == "Logan")
-//        studentScores = loganScores;
-
-//    int gradedAssignments = 0;
-//    int gradedExtraCreditAssignments = 0;
-
-//    int sumExamScores = 0;
-//    int sumExtraCreditScores = 0;
-
-//    decimal currentStudentGrade = 0;
-//    decimal currentStudentExamScore = 0;
-//    decimal currentStudentExtraCreditScore = 0;
-
-//    /* 
-//    the inner foreach loop: 
-//    - sums the exam and extra credit scores
-//    - counts the extra credit assignments
-//    */
-//    foreach (int score in studentScores)
-//    {
-//        gradedAssignments += 1;
-
-//        if (gradedAssignments <= examAssignments)
-//        {
-//            sumExamScores = sumExamScores + score;
-//        }
-
-//        else
-//        {
-//            gradedExtraCreditAssignments += 1;
-//            sumExtraCreditScores += score;
-//        }
-//    }
-
-//    currentStudentExamScore = (decimal)(sumExamScores) / examAssignments;
-//    currentStudentExtraCreditScore = (decimal)(sumExtraCreditScores) / gradedExtraCreditAssignments;
-
-//    currentStudentGrade = (decimal)((decimal)sumExamScores + ((decimal)sumExtraCreditScores / 10)) / examAssignments;
-
-//    if (currentStudentGrade >= 97)
-//        currentStudentLetterGrade = "A+";
-
-//    else if (currentStudentGrade >= 93)
-//        currentStudentLetterGrade = "A";
-
-//    else if (currentStudentGrade >= 90)
-//        currentStudentLetterGrade = "A-";
-
-//    else if (currentStudentGrade >= 87)
-//        currentStudentLetterGrade = "B+";
-
-//    else if (currentStudentGrade >= 83)
-//        currentStudentLetterGrade = "B";
-
-//    else if (currentStudentGrade >= 80)
-//        currentStudentLetterGrade = "B-";
-
-//    else if (currentStudentGrade >= 77)
-//        currentStudentLetterGrade = "C+";
-
-//    else if (currentStudentGrade >= 73)
-//        currentStudentLetterGrade = "C";
-
-//    else if (currentStudentGrade >= 70)
-//        currentStudentLetterGrade = "C-";
-
-//    else if (currentStudentGrade >= 67)
-//        currentStudentLetterGrade = "D+";
-
-//    else if (currentStudentGrade >= 63)
-//        currentStudentLetterGrade = "D";
-
-//    else if (currentStudentGrade >= 60)
-//        currentStudentLetterGrade = "D-";
-
-//    else
-//        currentStudentLetterGrade = "F";
-
-
-//    // Student         Exam Score      Overall Grade   Extra Credit
-//    // Sophia          92.2            95.88   A       92 (3.68 pts)
-
-//    Console.WriteLine($"{currentStudent}\t\t{currentStudentExamScore}\t\t{currentStudentGrade}\t{currentStudentLetterGrade}\t{currentStudentExtraCreditScore} ({(((decimal)sumExtraCreditScores / 10) / examAssignments)} pts)");
-//}
-
-//// required for running in VS Code (keeps the Output windows open to view results)
-//Console.WriteLine("\n\rPress the Enter key to continue");
-//Console.ReadLine();

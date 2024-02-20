@@ -1,4 +1,4 @@
-﻿// initialize variables - graded assignments 
+﻿// initialize variables - graded assignments
 int currentAssignments = 5;
 
 int sophia1 = 93;
@@ -24,3 +24,5 @@ int jeong2 = 92;
 int jeong3 = 98;
 int jeong4 = 100;
 int jeong5 = 97;
+
+Console.WriteLine(jeong1);
