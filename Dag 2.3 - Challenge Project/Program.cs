@@ -39,7 +39,7 @@ foreach (var (name, grades) in Students)
 
     decimal sumAssignmentScores = 0;
 
-    decimal overallGrade = 0;
+    decimal OverallGrade = 0;
 
     decimal examScore = 0;
 
@@ -70,9 +70,9 @@ foreach (var (name, grades) in Students)
             sumAssignmentScores += (decimal)score / 10;
     }
 
-    overallGrade = (decimal)(sumAssignmentScores) / examAssignments;
+    OverallGrade = (decimal)(sumAssignmentScores) / examAssignments;
 
-    decimal EXPoints = overallGrade - examScore;
+    decimal EXPoints = OverallGrade - examScore;
 
     var gradeRanges = new Dictionary<int, string>
 {
@@ -93,14 +93,14 @@ foreach (var (name, grades) in Students)
     // Find the letter grade for the current student's grade
     foreach (var (grade, letterGrade) in gradeRanges)
     {
-        if (overallGrade >= grade)
+        if (OverallGrade >= grade)
         {
             currentStudentLetterGrade = letterGrade;
             break; // Exit the loop once the grade is found
         }
     }
 
-    Console.WriteLine($"{name}\t\t{examScore}\t\t{overallGrade}\t{currentStudentLetterGrade}\t\t {ExtraCredit} ({EXPoints} pts) ");
+    Console.WriteLine($"{name}\t\t{examScore}\t\t{OverallGrade}\t{currentStudentLetterGrade}\t\t {ExtraCredit} ({EXPoints} pts) ");
 }
 
 Console.WriteLine("\n\rPress the Enter key to continue");
